@@ -47,25 +47,15 @@ const createCard = (info) => {
     
     arr.push(Number(info));
     
-    console.log(arr);
+    
     
     exit.addEventListener('click', ()=>{
         const result = document.querySelector('.sumBox')
         const pSum = document.querySelector('.pSum')
         card.remove();
-        result.remove();
-        let number = parseInt(pSum.textContent.match(/\d+/))
-        for (let index = 0; index < arr.length; index++) {
-            const element = arr[index];
-            if(element === number){
-                delete element
-                console.log(arr);
-                return arr
-            }
-        }
     })
 
-    console.log(arr);
+   
     return arr; 
 }
 
@@ -100,15 +90,20 @@ const createCard = (info) => {
   
 }
 
+    // resultSum(card)
+
+
     //Функция создания окна
 
     button.addEventListener('click', ()=> {
-        
+    
+    const deleteOfpastResult = document.querySelector('.sumBox');
+    
     const info = input.value
     const card = createCard(info);
     const sum = resultSum(card);
     input.value = ''
-    
+    deleteOfpastResult.remove();
 })
 
 

@@ -18,6 +18,19 @@ const createCard = (info) => {
     const date = document.createElement('p');
     const exit = document.createElement('button');
 
+    let today = new Date();
+    let day = today.getDate();
+    let month = today.getMonth() +1;
+    let year = today.getFullYear();
+    let hour = today.getHours();
+    let minuts = today.getMinutes();
+    
+
+    let time = `${hour}:${minuts}  ${day}.${month}.${year}`
+    date.classList.add('time')
+    date.textContent = time
+    card.append(date)
+
     card.classList.add('card')
     title.classList.add('title')
     p.classList.add('p')

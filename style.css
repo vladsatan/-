@@ -4,9 +4,28 @@
     box-sizing: border-box;
 }
 
-body {
+.body {
     background-color: rgb(24 20 20);
     box-shadow: inset 1px 1px 10px 10px rgb(183, 12, 12);
+}
+
+.bodylight {
+    background-color: white;
+    
+}
+
+.button-fim{
+    width: 200px;
+    height: 50px;
+    border: none;
+    outline: none;
+    background-color: red;
+    color: rgb(0, 0, 0);
+    position: absolute;
+    top: 20px;
+    right: -480px;
+    border-radius: 10px;
+    font-size: 20px;
 }
 
 .container {

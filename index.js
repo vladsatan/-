@@ -1,3 +1,4 @@
+'use strict'
 const root = document.getElementById('root');
 
 const input = document.querySelector('.point');
@@ -12,26 +13,18 @@ if (theme){root.classList.add('bodylight')};
 
 
 
-   //Функция создание карты
+//Функция создание карты
 
-const createCard = (info) => {
+const createCard = (cardinfo) => {
     const card = document.createElement('div');
     const title = document.createElement('h1');
     const p = document.createElement('p');
     const date = document.createElement('p');
     const exit = document.createElement('button');
-
-    let today = new Date();
-    let day = today.getDate();
-    let month = today.getMonth() +1;
-    let year = today.getFullYear();
-    let hour = today.getHours();
-    let minuts = today.getMinutes();
     
-
-    let time = `${hour}:${minuts}  ${day}.${month}.${year}`
+    
     date.classList.add('time')
-    date.textContent = time
+    date.textContent = cardinfo.date
     card.append(date)
 
     card.classList.add('card')
@@ -40,59 +33,53 @@ const createCard = (info) => {
 
     title.textContent = 'Сумма дохода'
     exit.textContent = 'Х'
-    p.textContent = `${info}  $`
+    p.textContent = `${cardinfo.sum}  $`
 
     exit.classList.add('exit')
 
     root.append(card)
     card.append(exit,title,p)
 
-    const objact = {id: arr.length + 1, sum: Number(info)};
-    arr.push(objact);
+    
+
+    localStorage.setItem('cardsArray', JSON.stringify(arr))
     
     exit.addEventListener('click', ()=>{
-        let id =  arr.length
-        console.log(id);
-        const newArr = arr.filter((e)=>{
-          return  e.id !== id
-         
-        })
-        card.remove()
-        arr = newArr
-        const deleteOfpastResult = document.querySelector('.sumBox');
-        if(deleteOfpastResult){
-            deleteOfpastResult.remove();}
-        resultSum(arr);
-        const deleteOfpastResult2 = document.querySelector('.sumBox');
-        if(arr.length === 0 && deleteOfpastResult2){
-            deleteOfpastResult2.remove()
-        }
-
-        localStorage.removeItem('title')
-        localStorage.removeItem('p')
-        localStorage.removeItem('date')
-        localStorage.removeItem('exit')
-
-    })
-       
-  
-
-    const titleLS = localStorage.setItem('title', title.textContent) 
-    const pLS = localStorage.setItem('p', p.textContent)
-    const dateLS = localStorage.setItem('date', date.textContent)
-    const exitLS = localStorage.setItem('exit', exit.textContent)
-        
     
-  
+          const deletecardId = cardinfo.id
+        
+          const newArr = arr.filter(e => {
+            if(e.id !== deletecardId){
+                return e}
+            
+            
+            
+        })
+          arr = newArr;
+          
+          card.remove()
+          
+          const deleteOfpastResult = document.querySelector('.sumBox');
+          if(deleteOfpastResult){
+            deleteOfpastResult.remove();}
+            resultSum(arr)
+            const pastLocalStorage = JSON.parse( localStorage.getItem('cardsArray'))
+          const newLocalStorage = pastLocalStorage.filter(e =>{
+               if( e.id !== deletecardId){return e}
+                
+            })
+            localStorage.removeItem('cardsArray')
+            localStorage.setItem('cardsArray',JSON.stringify(newLocalStorage))
+            
+})
 }
-  
 
 
     //Окно - Общий буджет
 
 const resultSum = (msv) =>{
 
-        console.log(msv);
+ 
 
     const sumBox = document.createElement('div');
     sumBox.classList.add('sumBox');
@@ -115,6 +102,24 @@ const resultSum = (msv) =>{
 
 
 
+const savedcards = JSON.parse(localStorage.getItem('cardsArray'))
+
+
+if (savedcards) {
+    arr = savedcards
+
+    savedcards.forEach(element => {
+        createCard(element)
+        const deleteOfpastResult = document.querySelector('.sumBox');
+        resultSum(arr);
+        if(deleteOfpastResult){
+            deleteOfpastResult.remove();}
+
+    });
+}
+
+
+
 
     //Функция создания окна
 
@@ -127,7 +132,25 @@ button.addEventListener('click', ()=> {
         alert('Введите числовое значение')
         return
     }
-    const card = createCard(info);
+
+    let today = new Date();
+    let day = today.getDate();
+    let month = today.getMonth() +1;
+    let year = today.getFullYear();
+    let hour = today.getHours();
+    let minuts = today.getMinutes();
+    
+
+  const  time = `${hour}:${minuts}  ${day}.${month}.${year}`
+
+  const objact = {id: arr.length + 1, sum: Number(info), date: time}
+
+  arr.push(objact);
+
+
+
+
+    const card = createCard(objact);
    
     resultSum(arr);
     input.value = '';
@@ -136,7 +159,8 @@ button.addEventListener('click', ()=> {
 
 })
 
-    
+ // Кнопка выбора темы
+
  const buttonTheme = document.querySelector('.button-fim') 
  
 buttonTheme.addEventListener('click', ()=>{
@@ -153,20 +177,18 @@ buttonTheme.addEventListener('click', ()=>{
 
 })
 
-// LocalStorage card
+ // Кнопка clear
 
-const titleLS = localStorage.getItem('title') 
-    const pLS = localStorage.getItem('p')
-    const dateLS = localStorage.getItem('date')
-    const exitLS = localStorage.getItem('exit')
+const buttonClear = document.querySelector('.button-clear');
 
+ buttonClear.addEventListener('click', ()=>{
+     const card = document.querySelectorAll('.card')
+     const cardsum = document.querySelector('.sumBox')
+     for (let i=0; i < card.length; i++){
+        card[i].remove()
+     }
+      cardsum.remove()
+      localStorage.clear()
+      arr = []
+})
 
-
-    if (titleLS,pLS,dateLS,exitLS){
-
-        const info = pLS.replace("$", "")
-        createCard(info)
-    }
-
-
-// toggl

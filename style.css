@@ -7,6 +7,7 @@
 .body {
     background-color: rgb(24 20 20);
     box-shadow: inset 1px 1px 10px 10px rgb(183, 12, 12);
+    overflow-x:hidden;
 }
 
 .bodylight {
@@ -146,4 +147,81 @@
     border-radius: 10px;
     font-size: 20px;
     font-weight: 800;
+}
+
+.loader {
+    background-color: rgb(183, 26, 26);
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    display: flex;
+    z-index: 3;
+    color: aliceblue;
+    font-size: 55px;
+    font-weight: 900;
+    cursor: none;
+    box-shadow: inset 0px 0px 20px 20px white;
+    animation: backrender 3s ease-in-out infinite;
+}
+
+.title-loader{
+    margin: auto;
+    cursor: pointer;
+    width: 100px;
+    height: 100px;
+    background-color: black;
+    animation: render 3s ease-in-out infinite;
+}
+
+.inactive {
+    display: none;
+}
+
+@keyframes render {
+   0%{
+      border-radius: 0;
+      background-color: black;
+   }
+
+   25%{
+    border-radius: 50%;
+    background-color: azure;
+   }
+
+   50% {
+    border-radius: 0;
+    background-color: black;
+   }
+
+   75%{
+    border-radius: 50%;
+    background-color: azure;
+   }
+
+   100%{
+    border-radius: 0;
+    background-color: black;
+   }
+}
+
+@keyframes backrender {
+    0%{
+        box-shadow: inset 0px 0px 20px 20px black;
+     }
+  
+     25%{
+        box-shadow: inset 0px 0px 20px 20px white;
+     }
+  
+     50% {
+        box-shadow: inset 0px 0px 20px 20px black;
+     }
+  
+     75%{
+        box-shadow: inset 0px 0px 20px 20px white;
+     }
+  
+     100%{
+        box-shadow: inset 0px 0px 20px 20px black;
+     }
 }

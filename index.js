@@ -1,4 +1,6 @@
 'use strict'
+
+
 const root = document.getElementById('root');
 
 const input = document.querySelector('.point');
@@ -11,6 +13,15 @@ const theme = localStorage.getItem('theme');
 
 if (theme){root.classList.add('bodylight')};
 
+const loader = document.querySelector('.loader');
+
+const loaderStart = () => {
+    loader.classList.add('inactive')
+}
+     
+    
+
+setTimeout(loaderStart, 1500);
 
 
 //Функция создание карты
@@ -45,6 +56,27 @@ const createCard = (cardinfo) => {
     localStorage.setItem('cardsArray', JSON.stringify(arr))
     
     exit.addEventListener('click', ()=>{
+        const promiseForLoader = new Promise((resolve)=>{
+       
+            const loaderOpen = ()=>{
+             loader.classList.remove('inactive')
+              loader.classList.add('loader')
+              resolve()
+            }
+            setTimeout(loaderOpen,0)
+        })
+        
+        promiseForLoader.then(resolve =>{
+          
+           const loaderClose = ()=>{
+            loader.classList.remove('loader')
+              loader.classList.add('inactive')
+              resolve()
+           }
+           setTimeout(loaderClose,1600)
+        })
+        
+        .then( () => {
     
           const deletecardId = cardinfo.id
         
@@ -70,7 +102,7 @@ const createCard = (cardinfo) => {
             })
             localStorage.removeItem('cardsArray')
             localStorage.setItem('cardsArray',JSON.stringify(newLocalStorage))
-            
+        })
 })
 }
 
@@ -124,8 +156,27 @@ if (savedcards) {
     //Функция создания окна
 
 button.addEventListener('click', ()=> {
+    const promiseForLoader = new Promise((resolve)=>{
+       
+        const loaderOpen = ()=>{
+         loader.classList.remove('inactive')
+          loader.classList.add('loader')
+          resolve()
+        }
+        setTimeout(loaderOpen,0)
+    })
     
-    const deleteOfpastResult = document.querySelector('.sumBox');
+    promiseForLoader.then(resolve =>{
+      
+       const loaderClose = ()=>{
+        loader.classList.remove('loader')
+          loader.classList.add('inactive')
+          resolve()
+       }
+       setTimeout(loaderClose,1500)
+    })
+    
+    .then( () => {const deleteOfpastResult = document.querySelector('.sumBox');
     
     const info = input.value;
     if(isFinite(info) === false){
@@ -147,15 +198,12 @@ button.addEventListener('click', ()=> {
 
   arr.push(objact);
 
-
-
-
-    const card = createCard(objact);
+ const card = createCard(objact);
    
     resultSum(arr);
     input.value = '';
     if(deleteOfpastResult){
-    deleteOfpastResult.remove();}
+    deleteOfpastResult.remove()}})
 
 })
 
@@ -191,4 +239,6 @@ const buttonClear = document.querySelector('.button-clear');
       localStorage.clear()
       arr = []
 })
+
+
 
